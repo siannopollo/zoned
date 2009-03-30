@@ -11,6 +11,8 @@ module Zoned
   
   protected
     def timezone_offset
-      (Zoned.timezone_offset || controller.send(:cookies)['timezone']).to_i
+      tzo = Zoned.timezone_offset
+      tzo ||= controller.send(:cookies)['timezone'].to_i if self.respond_to?(:controller)
+      tzo
     end
 end
