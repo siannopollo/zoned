@@ -26,3 +26,16 @@ local time, otherwise it will do nothing.
 
 You don't need to have AR save your time in UTC, the plugin will determine 
 your server's offset and adjust accordingly.
+
+If you choose to use the zoned method in your active record objects, you will
+need to set the Zoned.timezone_offset in a before filter for each request. It
+should look something like this:
+
+class ApplicationController < ActionController::Base
+  before_filter :set_timezone_offset
+  
+  protected
+    def set_timezone_offset
+      Zoned.timezone_offset = cookies['timezone'].to_i
+    end
+end

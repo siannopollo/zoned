@@ -39,3 +39,18 @@ describe "Zoned" do
     z(time).to_s(:full_date_time).should == "March 20, 2009 at 9:30am UTC"
   end
 end
+
+describe 'Zoned api' do
+  include Zoned
+  
+  it 'should provide a setter method to allow for more flexible assignment of timezone offset' do
+    time = Time.parse("Fri, 20 Mar 2009 14:30:00 UTC +00:00")
+    time.to_s(:full_date_time).should == "March 20, 2009 at 2:30pm UTC"
+    
+    Zoned.timezone_offset = -14400 # EDT timezone offset
+    z(time).to_s(:full_date_time).should == "March 20, 2009 at 10:30am UTC"
+    
+    Zoned.timezone_offset = -25200 # PDT timezone offset
+    z(time).to_s(:full_date_time).should == "March 20, 2009 at 7:30am UTC"
+  end
+end
