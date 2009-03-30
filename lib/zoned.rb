@@ -4,7 +4,6 @@ module Zoned
   end
   
   def zoned(date_or_time)
-    return date_or_time unless timezone_offset
     date_or_time.utc + timezone_offset
   end
   alias :z :zoned
@@ -12,7 +11,7 @@ module Zoned
   protected
     def timezone_offset
       tzo = Zoned.timezone_offset
-      tzo ||= controller.send(:cookies)['timezone'].to_i if self.respond_to?(:controller)
-      tzo
+      tzo ||= controller.send(:cookies)['timezone'] if self.respond_to?(:controller)
+      tzo.to_i
     end
 end
